@@ -60,6 +60,9 @@ export class DatabaseStorage implements IStorage {
   }
 
   async deleteSubject(userId: string, id: number): Promise<void> {
+    // Cascading delete for schedule and attendance
+    await db.delete(weeklySchedule).where(eq(weeklySchedule.subjectId, id));
+    await db.delete(attendanceRecords).where(eq(attendanceRecords.subjectId, id));
     await db.delete(subjects).where(and(eq(subjects.id, id), eq(subjects.userId, userId)));
   }
 
