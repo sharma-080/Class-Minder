@@ -86,7 +86,7 @@ export default function Subjects() {
                   <Input 
                     type="color" 
                     id="color-picker" 
-                    value={form.watch("color")}
+                    value={form.watch("color") || "#3b82f6"}
                     onChange={(e) => form.setValue("color", e.target.value)}
                     className="w-12 h-10 p-1 cursor-pointer" 
                   />

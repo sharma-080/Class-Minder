@@ -85,22 +85,20 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getAttendanceRecords(userId: string, startDate?: string, endDate?: string): Promise<(AttendanceRecord & { subject: Subject })[]> {
-    let query = db.select()
-      .from(attendanceRecords)
-      .innerJoin(subjects, eq(attendanceRecords.subjectId, subjects.id))
-      .where(eq(attendanceRecords.userId, userId));
+    const conditions = [eq(attendanceRecords.userId, userId)];
 
     if (startDate) {
-      query.where(gte(attendanceRecords.date, startDate));
+      conditions.push(gte(attendanceRecords.date, startDate));
     }
     if (endDate) {
-      query.where(lte(attendanceRecords.date, endDate));
+      conditions.push(lte(attendanceRecords.date, endDate));
     }
     
-    // Default sort by date desc
-    // query.orderBy(desc(attendanceRecords.date)); // Need to import desc
+    const rows = await db.select()
+      .from(attendanceRecords)
+      .innerJoin(subjects, eq(attendanceRecords.subjectId, subjects.id))
+      .where(and(...conditions));
 
-    const rows = await query;
     return rows.map(r => ({ ...r.attendance_records, subject: r.subjects })).sort((a, b) => 
       new Date(b.date).getTime() - new Date(a.date).getTime() || 
       b.startTime.localeCompare(a.startTime)
@@ -114,7 +112,7 @@ export class DatabaseStorage implements IStorage {
 
   async updateAttendanceStatus(userId: string, id: number, status: string): Promise<AttendanceRecord | undefined> {
     const [updated] = await db.update(attendanceRecords)
-      .set({ status })
+      .set({ status: status as any })
       .where(and(eq(attendanceRecords.id, id), eq(attendanceRecords.userId, userId)))
       .returning();
     return updated;
@@ -122,7 +120,7 @@ export class DatabaseStorage implements IStorage {
 
   async bulkCreateAttendanceRecords(records: InsertAttendanceRecord[]): Promise<void> {
     if (records.length === 0) return;
-    await db.insert(attendanceRecords).values(records);
+    await db.insert(attendanceRecords).values(records as any);
   }
 
   async getAttendanceStats(userId: string): Promise<any[]> {
