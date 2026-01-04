@@ -105,6 +105,28 @@
   @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent;
 }
 
+/* Force dark mode background */
+.dark body {
+  @apply bg-background text-foreground;
+}
+
+.dark .bg-white {
+  @apply bg-card;
+}
+
+.dark .text-slate-900 {
+  @apply text-foreground;
+}
+
+.dark .text-slate-500 {
+  @apply text-muted-foreground;
+}
+
+.dark .border-slate-200 {
+  @apply border-border;
+}
+
+
 /* Animations */
 @keyframes fade-in-up {
   from {

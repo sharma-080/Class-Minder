@@ -77,9 +77,27 @@ export default function Dashboard() {
   }, [todaysClasses, notificationsEnabled]);
 
   const requestNotification = async () => {
-    if (!("Notification" in window)) return;
+    if (!("Notification" in window)) {
+      alert("This browser does not support desktop notifications");
+      return;
+    }
+    
+    // Check if permission is already denied
+    if (Notification.permission === "denied") {
+      alert("Notifications are blocked. Please enable them in your browser settings to receive reminders.");
+      return;
+    }
+
     const permission = await Notification.requestPermission();
-    if (permission === "granted") setNotificationsEnabled(true);
+    if (permission === "granted") {
+      setNotificationsEnabled(true);
+      new Notification("Notifications Enabled!", {
+        body: "You will now receive class reminders 15m before and 10m after class.",
+        icon: '/favicon.ico'
+      });
+    } else {
+      alert("Permission denied. You won't receive class reminders.");
+    }
   };
 
   // Process stats for Chart
