@@ -28,24 +28,29 @@ function ProtectedRoute({ component: Component }: { component: React.ComponentTy
 
 function Router() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex flex-col">
       <Navigation />
-      <Switch>
-        <Route path="/" component={Home} />
-        <Route path="/dashboard">
-          <ProtectedRoute component={Dashboard} />
-        </Route>
-        <Route path="/subjects">
-          <ProtectedRoute component={Subjects} />
-        </Route>
-        <Route path="/timetable">
-          <ProtectedRoute component={Timetable} />
-        </Route>
-        <Route path="/history">
-          <ProtectedRoute component={History} />
-        </Route>
-        <Route component={NotFound} />
-      </Switch>
+      <main className="flex-1">
+        <Switch>
+          <Route path="/" component={Home} />
+          <Route path="/dashboard">
+            <ProtectedRoute component={Dashboard} />
+          </Route>
+          <Route path="/subjects">
+            <ProtectedRoute component={Subjects} />
+          </Route>
+          <Route path="/timetable">
+            <ProtectedRoute component={Timetable} />
+          </Route>
+          <Route path="/history">
+            <ProtectedRoute component={History} />
+          </Route>
+          <Route component={NotFound} />
+        </Switch>
+      </main>
+      <footer className="border-t py-6 text-center text-sm text-muted-foreground">
+        Made by npm_sharma
+      </footer>
     </div>
   );
 }

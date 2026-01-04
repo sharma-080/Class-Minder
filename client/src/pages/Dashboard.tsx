@@ -27,6 +27,48 @@ export default function Dashboard() {
     }
   }, []);
 
+  useEffect(() => {
+    if (!todaysClasses || !notificationsEnabled) return;
+
+    const checkReminders = () => {
+      const now = new Date();
+      todaysClasses.forEach(record => {
+        const [hours, minutes] = record.startTime.split(':').map(Number);
+        const [endHours, endMinutes] = record.endTime.split(':').map(Number);
+        
+        const startTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, minutes);
+        const endTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), endHours, endMinutes);
+
+        // 15 mins before reminder
+        const fifteenMinsBefore = new Date(startTime.getTime() - 15 * 60000);
+        if (now.getTime() >= fifteenMinsBefore.getTime() && now.getTime() < startTime.getTime()) {
+          const key = `reminder-before-${record.id}`;
+          if (!localStorage.getItem(key)) {
+            new Notification(`Class Starting Soon: ${record.subject.name}`, {
+              body: `Your class starts at ${record.startTime}. Get ready!`,
+            });
+            localStorage.setItem(key, 'true');
+          }
+        }
+
+        // 10 mins after reminder
+        const tenMinsAfter = new Date(endTime.getTime() + 10 * 60000);
+        if (now.getTime() >= tenMinsAfter.getTime() && now.getTime() < (endTime.getTime() + 15 * 60000)) {
+          const key = `reminder-after-${record.id}`;
+          if (!localStorage.getItem(key)) {
+            new Notification(`Class Ended: ${record.subject.name}`, {
+              body: `Your class ended at ${record.endTime}. Please mark your attendance.`,
+            });
+            localStorage.setItem(key, 'true');
+          }
+        }
+      });
+    };
+
+    const interval = setInterval(checkReminders, 60000); // Check every minute
+    return () => clearInterval(interval);
+  }, [todaysClasses, notificationsEnabled]);
+
   const requestNotification = async () => {
     if (!("Notification" in window)) return;
     const permission = await Notification.requestPermission();
