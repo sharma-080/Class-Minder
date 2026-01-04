@@ -85,8 +85,9 @@ export default function Subjects() {
                 <div className="flex gap-2">
                   <Input 
                     type="color" 
-                    id="color" 
-                    {...form.register("color")} 
+                    id="color-picker" 
+                    value={form.watch("color")}
+                    onChange={(e) => form.setValue("color", e.target.value)}
                     className="w-12 h-10 p-1 cursor-pointer" 
                   />
                   <Input 

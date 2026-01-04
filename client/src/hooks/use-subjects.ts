@@ -52,7 +52,9 @@ export function useDeleteSubject() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [api.subjects.list.path] });
-      queryClient.invalidateQueries({ queryKey: [api.schedule.list.path] }); // Schedule depends on subjects
+      queryClient.invalidateQueries({ queryKey: [api.schedule.list.path] });
+      queryClient.invalidateQueries({ queryKey: [api.attendance.list.path] });
+      queryClient.invalidateQueries({ queryKey: [api.attendance.stats.path] });
     },
   });
 }
