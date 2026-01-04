@@ -144,7 +144,7 @@ export default function Dashboard() {
               {[1, 2].map((i) => <Skeleton key={i} className="h-32 w-full rounded-xl" />)}
             </div>
           ) : todaysClasses?.length === 0 ? (
-            <div className="text-center py-12 bg-card rounded-2xl border border-dashed border-border">
+            <div className="text-center py-12 bg-card rounded-2xl border border-dashed border-border/60">
               <div className="mx-auto w-12 h-12 bg-muted rounded-full flex items-center justify-center mb-4">
                 <Calendar className="w-6 h-6 text-muted-foreground" />
               </div>

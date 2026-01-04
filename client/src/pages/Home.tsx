@@ -53,18 +53,18 @@ export default function Home() {
         </div>
 
         <div className="pt-12 grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
-          <div className="p-6 bg-white/50 backdrop-blur-sm rounded-xl border border-white/20 shadow-sm">
+          <div className="p-6 bg-card backdrop-blur-sm rounded-xl border border-border/50 shadow-sm">
             <ShieldCheck className="w-8 h-8 text-primary mb-3" />
             <h3 className="font-bold text-lg mb-1">Smart Tracking</h3>
             <p className="text-sm text-muted-foreground">Automatically calculates your attendance percentage.</p>
           </div>
-          <div className="p-6 bg-white/50 backdrop-blur-sm rounded-xl border border-white/20 shadow-sm">
+          <div className="p-6 bg-card backdrop-blur-sm rounded-xl border border-border/50 shadow-sm">
             <CalendarClock className="w-8 h-8 text-accent mb-3" />
             <h3 className="font-bold text-lg mb-1">Schedule Builder</h3>
             <p className="text-sm text-muted-foreground">Input your weekly timetable and generate months of classes.</p>
           </div>
-           <div className="p-6 bg-white/50 backdrop-blur-sm rounded-xl border border-white/20 shadow-sm">
-            <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mb-3 text-green-600 font-bold">%</div>
+           <div className="p-6 bg-card backdrop-blur-sm rounded-xl border border-border/50 shadow-sm">
+            <div className="w-8 h-10 bg-green-500/10 rounded-full flex items-center justify-center mb-3 text-green-600 font-bold px-3">%</div>
             <h3 className="font-bold text-lg mb-1">Analytics</h3>
             <p className="text-sm text-muted-foreground">Visual charts to keep you on top of your academic goals.</p>
           </div>

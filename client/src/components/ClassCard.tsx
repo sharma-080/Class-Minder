@@ -17,10 +17,10 @@ export function ClassCard({ record, compact = false }: ClassCardProps) {
   };
 
   const statusColors = {
-    scheduled: "border-l-4 border-l-blue-500 bg-card",
+    scheduled: "border-l-4 border-l-primary/50 bg-card",
     present: "border-l-4 border-l-green-500 bg-green-500/10",
     absent: "border-l-4 border-l-red-500 bg-red-500/10",
-    cancelled: "border-l-4 border-l-gray-400 bg-muted/50 opacity-75",
+    cancelled: "border-l-4 border-l-muted-foreground/40 bg-muted/50 opacity-75",
   };
 
   return (
