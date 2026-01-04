@@ -88,26 +88,30 @@ export async function registerRoutes(
       const records = [];
 
       while (current <= end) {
-        // 0=Sunday, 1=Monday... 6=Saturday. getDay() returns 0 for Sunday.
-        // Database dayOfWeek: User might store 1=Monday. Let's assume frontend sends 1=Monday, 7=Sunday or 0=Sunday.
-        // Let's standardize: Date-fns getDay(): 0=Sun, 1=Mon.
-        // WeeklySchedule DB: 1=Mon, 2=Tue... 6=Sat, 0=Sun (matching date-fns for simplicity if user enters it that way, 
-        // OR we map it. Let's assume 1=Mon, 7=Sun.
-        
-        const day = getDay(current); // 0-6
+        const day = getDay(current); // 0-6 (0=Sunday)
         const adjustedDay = day === 0 ? 7 : day; // Convert 0(Sun) to 7(Sun) to match 1-7 ISO
 
         const daySchedule = schedule.filter(s => s.dayOfWeek === adjustedDay);
 
         for (const item of daySchedule) {
-          records.push({
-            userId,
-            subjectId: item.subjectId,
-            date: format(current, 'yyyy-MM-dd'),
-            startTime: item.startTime,
-            endTime: item.endTime,
-            status: 'scheduled',
-          });
+          // Check if this specific instance already exists to avoid duplicates if re-running
+          const existing = await storage.getAttendanceRecords(userId, format(current, 'yyyy-MM-dd'), format(current, 'yyyy-MM-dd'));
+          const isDuplicate = existing.some(e => 
+            e.subjectId === item.subjectId && 
+            e.startTime === item.startTime && 
+            e.endTime === item.endTime
+          );
+
+          if (!isDuplicate) {
+            records.push({
+              userId,
+              subjectId: item.subjectId,
+              date: format(current, 'yyyy-MM-dd'),
+              startTime: item.startTime,
+              endTime: item.endTime,
+              status: 'scheduled',
+            });
+          }
         }
         current = addDays(current, 1);
       }

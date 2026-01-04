@@ -102,12 +102,15 @@ export default function Timetable() {
           <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
             <DialogTrigger asChild>
               <Button variant="outline" className="gap-2">
-                <Plus className="w-4 h-4" /> Add Class
+                <Plus className="w-4 h-4" /> Add Class Slot
               </Button>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>Add Class to Timetable</DialogTitle>
+                <DialogDescription>
+                  You can add multiple time slots for the same subject on different days.
+                </DialogDescription>
               </DialogHeader>
               <form onSubmit={form.handleSubmit(onAddItem)} className="space-y-4">
                 <div className="space-y-2">
