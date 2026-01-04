@@ -108,13 +108,14 @@ export default function Dashboard() {
         </div>
         
         {!notificationsEnabled && (
-          <div 
+          <Button 
             onClick={requestNotification}
-            className="flex items-center gap-2 px-4 py-2 bg-accent/10 text-accent rounded-full text-sm font-medium cursor-pointer hover:bg-accent/20 transition-colors"
+            variant="outline"
+            className="flex items-center gap-2 px-4 py-2 bg-accent/10 text-accent rounded-full text-sm font-medium cursor-pointer hover:bg-accent/20 transition-colors h-9"
           >
             <Bell className="w-4 h-4" />
             Enable Class Reminders
-          </div>
+          </Button>
         )}
       </div>
 
@@ -136,7 +137,7 @@ export default function Dashboard() {
               {[1, 2].map((i) => <Skeleton key={i} className="h-32 w-full rounded-xl" />)}
             </div>
           ) : todaysClasses?.length === 0 ? (
-            <div className="text-center py-12 bg-white rounded-2xl border border-dashed border-border">
+            <div className="text-center py-12 bg-card rounded-2xl border border-dashed border-border">
               <div className="mx-auto w-12 h-12 bg-muted rounded-full flex items-center justify-center mb-4">
                 <Calendar className="w-6 h-6 text-muted-foreground" />
               </div>

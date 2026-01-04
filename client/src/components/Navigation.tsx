@@ -2,6 +2,7 @@ import { Link, useLocation } from "wouter";
 import { CalendarClock, LayoutDashboard, BookOpen, UserCircle, LogOut } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "./ThemeToggle";
 
 export function Navigation() {
   const [location] = useLocation();
@@ -64,6 +65,7 @@ export function Navigation() {
             >
               <LogOut className="h-5 w-5" />
             </Button>
+            <ThemeToggle />
           </div>
         </div>
       </div>
