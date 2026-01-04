@@ -42,11 +42,14 @@ export default function Dashboard() {
 
         // 15 mins before reminder
         const fifteenMinsBefore = new Date(startTime.getTime() - 15 * 60000);
-        if (now.getTime() >= fifteenMinsBefore.getTime() && now.getTime() < startTime.getTime()) {
-          const key = `reminder-before-${record.id}`;
+        const startTimeEnd = new Date(startTime.getTime());
+        
+        if (now.getTime() >= fifteenMinsBefore.getTime() && now.getTime() < startTimeEnd.getTime()) {
+          const key = `reminder-before-${record.id}-${startTime.toDateString()}`;
           if (!localStorage.getItem(key)) {
             new Notification(`Class Starting Soon: ${record.subject.name}`, {
               body: `Your class starts at ${record.startTime}. Get ready!`,
+              icon: '/favicon.ico'
             });
             localStorage.setItem(key, 'true');
           }
@@ -54,11 +57,14 @@ export default function Dashboard() {
 
         // 10 mins after reminder
         const tenMinsAfter = new Date(endTime.getTime() + 10 * 60000);
-        if (now.getTime() >= tenMinsAfter.getTime() && now.getTime() < (endTime.getTime() + 15 * 60000)) {
-          const key = `reminder-after-${record.id}`;
+        const tenMinsAfterEnd = new Date(endTime.getTime() + 15 * 60000);
+        
+        if (now.getTime() >= tenMinsAfter.getTime() && now.getTime() < tenMinsAfterEnd.getTime()) {
+          const key = `reminder-after-${record.id}-${startTime.toDateString()}`;
           if (!localStorage.getItem(key)) {
             new Notification(`Class Ended: ${record.subject.name}`, {
               body: `Your class ended at ${record.endTime}. Please mark your attendance.`,
+              icon: '/favicon.ico'
             });
             localStorage.setItem(key, 'true');
           }
