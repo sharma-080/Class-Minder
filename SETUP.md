@@ -1,63 +1,83 @@
 # Attendify Setup Guide
 
-This guide provides detailed instructions on how to set up and run Attendify, the Student Attendance Tracker.
+This guide provides a comprehensive, step-by-step walkthrough for setting up and running Attendify, the Student Attendance Tracker.
 
-## Prerequisites
+## Phase 1: Preparation
 
-- [Node.js](https://nodejs.org/) (v18 or higher)
-- [PostgreSQL](https://www.postgresql.org/) database
-- [Replit Account](https://replit.com/) (recommended for easy deployment and auth integration)
+### 1. Replit Environment
+- Go to [Replit](https://replit.com/) and create a new account if you don't have one.
+- Open the project in your Replit workspace.
 
-## Environment Variables & Secrets
+### 2. Required Tools
+Ensure the following are available in your environment (Replit provides these by default):
+- **Node.js** (v18 or higher)
+- **npm** (Node Package Manager)
 
-To run this application, you need to configure several environment variables. On Replit, these should be added to the **Secrets** tab.
+## Phase 2: Configuration (Secrets & Environment Variables)
 
-| Key | Description | Example |
-|-----|-------------|---------|
-| `DATABASE_URL` | PostgreSQL connection string | `postgres://user:password@host:port/db` |
-| `SESSION_SECRET` | A long, random string used to encrypt sessions | `your_random_secret_here` |
-| `REPL_ID` | (Automatically set by Replit) Unique ID of your Repl | `repl-id-123` |
-| `ISSUER_URL` | OpenID Connect issuer URL | `https://replit.com/oidc` |
+You must configure several keys for the application to function. In Replit, use the **Secrets** tool (lock icon in the sidebar).
 
-## Database Setup
+### 1. Database URL
+- You need a PostgreSQL database. Replit provides a built-in one.
+- If using Replit's database, the `DATABASE_URL` is automatically added for you.
+- If using an external database, add a secret:
+  - **Key**: `DATABASE_URL`
+  - **Value**: `postgres://user:password@host:port/db_name`
 
-1. **Connection**: Ensure your `DATABASE_URL` is correctly set in your environment variables.
-2. **Schema Push**: Sync your database schema with Drizzle ORM:
-   ```bash
-   npm run db:push
-   ```
-   *Note: If the push fails due to structural changes, you may need to use `--force`.*
+### 2. Session Secret
+- This is used to secure user sessions.
+- Add a secret:
+  - **Key**: `SESSION_SECRET`
+  - **Value**: A long, random string (e.g., `83b27ac...91f2`)
 
-## Authentication
+### 3. Replit Auth (OIDC)
+- Ensure the **Auth** integration is active. 
+- The following are handled automatically by Replit but listed for completeness:
+  - `REPL_ID`: Your unique Repl identifier.
+  - `ISSUER_URL`: Set to `https://replit.com/oidc`.
 
-Attendify uses **Replit log in with Replit (OIDC)**.
-- When running on Replit, authentication is handled automatically through the `javascript_log_in_with_replit` integration.
-- Ensure the **Auth** integration is enabled in your Replit workspace.
+## Phase 3: Installation & Initialization
 
-## Installation & Running
+### 1. Install Packages
+Open the shell/terminal and run:
+```bash
+npm install
+```
 
-1. **Install Dependencies**:
-   ```bash
-   npm install
-   ```
-2. **Start Development Server**:
-   ```bash
-   npm run dev
-   ```
-   This starts both the Express backend and the Vite frontend on port 5000.
+### 2. Initialize Database
+Sync your code's data model with your PostgreSQL database:
+```bash
+npm run db:push
+```
+*If you see warnings about structure changes, you can safely proceed or use `npm run db:push -- --force`.*
 
-## Project Structure
+## Phase 4: Launching the App
 
-- `client/`: React frontend (Vite, Tailwind, shadcn/ui)
-- `server/`: Node.js Express backend
-- `shared/`: Shared database schema and Zod types
-- `shared/routes.ts`: Unified API route definitions
+### 1. Start the Server
+Run the following command:
+```bash
+npm run dev
+```
+- This will start the Express backend and Vite frontend simultaneously.
+- The application will be accessible on port **5000**.
 
-## Troubleshooting
+### 2. Accessing the UI
+- Once the "Start application" workflow shows as running, click the **Webview** tab in Replit.
+- You should see the login screen for Attendify.
 
-- **Database Errors**: Ensure your PostgreSQL instance is running and reachable from your environment.
-- **Unauthorized Errors**: Check if your session is active and that Replit Auth is correctly configured.
-- **Port Conflicts**: The app defaults to port 5000. Ensure no other service is using this port.
+## Phase 5: Usage Steps
+
+1. **Login**: Click "Login with Replit" to create your account.
+2. **Add Subjects**: Navigate to the "Subjects" page and add your courses (e.g., Math, Science). Pick a color for each.
+3. **Set Timetable**: Go to the "Timetable" page. Add "Class Slots" for each subject by selecting the day and time.
+4. **Generate Schedule**: On the Timetable page, click "Generate Schedule". Select a start date and the number of months (e.g., 3 months).
+5. **Mark Attendance**: Your dashboard will now show today's classes. Mark them as "Present", "Absent", or "Cancelled".
+
+## Troubleshooting Common Issues
+
+- **Empty Dashboard**: Ensure you have clicked "Generate Schedule" after adding classes to your Timetable.
+- **Database Connection Error**: Verify that `DATABASE_URL` is correct and your database server is active.
+- **Notifications Not Appearing**: Ensure you have clicked "Enable Class Reminders" on the Dashboard and granted browser permissions.
 
 ---
-*Built with React, Express, and Drizzle ORM.*
+*Developed by npm_sharma*
