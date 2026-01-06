@@ -36,6 +36,32 @@ You must configure several keys for the application to function. In Replit, use 
   - `REPL_ID`: Your unique Repl identifier.
   - `ISSUER_URL`: Set to `https://replit.com/oidc`.
 
+---
+
+## 💡 Example: How to add Secrets
+
+In Replit, you do **not** add secrets directly into the code files (like `server/index.ts`). Instead, you use the **Secrets Tool**.
+
+### Step 1: Locate the Secrets Tool
+Click the **lock icon** (Secrets) in the left-hand sidebar of your Replit editor.
+
+### Step 2: Add your Secrets
+Add the following key-value pairs exactly as shown:
+
+| Key | Example Value | Why? |
+|-----|---------------|------|
+| `DATABASE_URL` | `postgresql://neondb_owner:npg_x123@ep-cool-water-123.us-east-2.aws.neon.tech/neondb?sslmode=require` | Connects the app to your database. |
+| `SESSION_SECRET` | `df93j20fj392jf032jf032jf032jf032jf032jf032j` | Encrypts user login sessions for security. |
+
+### Step 3: Verification
+The code automatically reads these values using `process.env`. 
+
+**Example of how the code uses them (DO NOT EDIT THESE FILES):**
+- In `server/db.ts`: `const pool = new Pool({ connectionString: process.env.DATABASE_URL });`
+- In `server/replit_integrations/auth/index.ts`: `secret: process.env.SESSION_SECRET`
+
+---
+
 ## Phase 3: Installation & Initialization
 
 ### 1. Install Packages
